@@ -39,11 +39,9 @@
 
         <template v-if="$vuetify.breakpoint.smAndUp">
             <v-btn icon>
-                <v-icon>mdi-delete-circle</v-icon>
-            </v-btn>
-            <v-btn icon>
                 <v-icon>mdi-plus-circle</v-icon>
             </v-btn>
+            <span>{{ funds | currency }}</span>
             <v-btn icon>
                 <v-icon>mdi-export-variant</v-icon>
             </v-btn>
@@ -62,5 +60,10 @@
         { title: 'Click Me 2' },
       ],
     }),
+    computed: {
+      funds() {
+        return this.$store.getters.funds;
+      }
+    }
   }
   </script>

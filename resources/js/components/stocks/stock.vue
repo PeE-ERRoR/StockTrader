@@ -13,17 +13,11 @@
             </v-img>
 
             <v-card-text>
-                <span>Price: {{ stock.price }}$</span><br>
+                <span>Price: {{ stock.price | currency }}</span><br>
                 <span class="text--primary">
                     <span>Whitehaven Beach</span><br>
                     <span>Whitsunday Island, Whitsunday Islands</span>
                 </span>
-                <!-- <v-text-field
-                    label="Quantity"
-                    solo
-                    clearable
-                    v-model="quantity"
-                 ></v-text-field> -->
             </v-card-text>
              
             <v-card-actions>
@@ -37,7 +31,7 @@
                     right
                     color="green"
                     @click="buyStock"
-                    :disabled="quantity <= 0 || !Number.isInteger(quantity * 1)"
+                    :disabled="insufficientFunds || quantity <= 0 || !Number.isInteger(quantity * 1)"
                 >
                     Buy
                 </v-btn>
@@ -52,14 +46,22 @@
     data: () => ({
       quantity: 0
     }),
+    computed: {
+        funds() {
+            return this.$store.getters.funds;
+        },
+        insufficientFunds() {
+            return this.quantity * this.stock.price > this.funds;
+        }
+    },
     methods: {
         buyStock() {
             const order = {
                 stockId: this.stock.id,
                 stockPrice: this.stock.price,
-                quantity: this.quantity
+                quantity: this.quantity * 1
             }
-            console.log(order);
+            this.$store.dispatch('buyStock', order);
             this.quantity = 0;
         }
     }

@@ -7,20 +7,19 @@
     </div>
 </template>
 <script>
-import Stack from './stock.vue';
+import Stock from './Stock';
 export default {
     data() {
         return {
-            stocks:[
-                { id: 1, name: 'Orb', price: 110 },
-                { id: 2, name: 'Sword', price: 120 },
-                { id: 3, name: 'Blade', price: 310 },
-                { id: 4, name: 'Katana', price: 250 },
-            ]
         }
     },
     components: {
-        appStock: Stack
+        appStock: Stock
+    },
+    computed: {
+        stocks() {
+            return this.$store.getters.stocks;
+        },
     }
 }
 </script>
