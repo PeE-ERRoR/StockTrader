@@ -13,6 +13,7 @@
             <v-btn text to="/">Stock Trader</v-btn>
             <v-btn text to="/portfolio">Portfolio</v-btn>
             <v-btn text to="/stocks">Stocks</v-btn>
+            <v-btn @click="endDay">End Day</v-btn>
             <v-menu
                 bottom
                 origin="center center"
@@ -22,18 +23,25 @@
                     color=""
                     dark
                     v-on="on">
-                    Scale Transition
+                    Save & Load
                     </v-btn>
                 </template>
-
                 <v-list>
+                    <v-list-item @click="saveData">
+                      <v-list-item-title>Save</v-list-item-title>
+                    </v-list-item>
+                    <v-list-item @click="loadData">
+                      <v-list-item-title>Load</v-list-item-title>
+                    </v-list-item>
+                </v-list>
+                <!-- <v-list>
                     <v-list-item
                     v-for="(item, i) in items"
                     :key="i"
-                    click="">
+                    @click="saveData">
                     <v-list-item-title>{{ item.title }}</v-list-item-title>
                     </v-list-item>
-                </v-list>
+                </v-list> -->
             </v-menu>
         </v-toolbar-items>
 
@@ -51,18 +59,38 @@
 </template>
 
 <script>
+  import {mapActions} from 'vuex';
+
   export default {
     data: () => ({
       items: [
-        { title: 'Click Me' },
-        { title: 'Click Me' },
-        { title: 'Click Me' },
-        { title: 'Click Me 2' },
+        { title: 'Save' },
+        { title: 'Load' },
       ],
     }),
     computed: {
       funds() {
         return this.$store.getters.funds;
+      }
+    },
+    methods: {
+      ...mapActions({
+        randomizeStocks: 'randomizeStocks',
+        fetchData: 'loadData'
+      }),
+      endDay() {
+        this.randomizeStocks();
+      },
+      saveData() {
+        const data = {
+          funds: this.$store.getters.funds,
+          stockPortfolio: this.$store.getters.stockPortfolio,
+          stocks: this.$store.getters.stocks
+        };
+        this.$http.put('data.json', data);
+      },
+      loadData() {
+        this.fetchData();
       }
     }
   }
