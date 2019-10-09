@@ -43,6 +43,9 @@
                     </v-list-item>
                 </v-list> -->
             </v-menu>
+
+            <app-login></app-login>
+            <app-register></app-register>
         </v-toolbar-items>
 
         <template v-if="$vuetify.breakpoint.smAndUp">
@@ -59,7 +62,9 @@
 </template>
 
 <script>
-  import {mapActions} from 'vuex';
+  import {mapActions} from 'vuex'
+  import Login from '../components/auth/login'
+  import Register from '../components/auth/Register'
 
   export default {
     data: () => ({
@@ -92,6 +97,10 @@
       loadData() {
         this.fetchData();
       }
+    },
+    components: {
+      'appLogin': Login,
+      'appRegister': Register
     }
   }
   </script>
