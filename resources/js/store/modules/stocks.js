@@ -1,16 +1,16 @@
-import stocks from '../../data/stocks';
+import weapons from '../../data/weapon';
 
 const state = {
-    stocks: []
+    weapons: []
 };
 
 const mutations = {
-    'SET_STOCKS' (state, stocks) {
-        state.stocks = stocks;
+    'SET_STOCKS' (state, weapons) {
+        state.weapons = weapons;
     },
     'RND_STOCKS' (state) {
-        state.stocks.forEach(stock => {
-          stock.price = Math.round(stock.price * (1 + Math.random() - 0.4));  
+        state.weapons.forEach(weapon => {
+          weapon.price = Math.round(weapon.price * (1 + Math.random() - 0.4));  
         });
     }
 };
@@ -20,7 +20,7 @@ const actions = {
         commit('BUY_STOCK', order);
     },
     initStocks: ({commit}) => {
-        commit('SET_STOCKS', stocks);
+        commit('SET_STOCKS', weapons);
     },
     randomizeStocks: ({commit}) => {
         commit('RND_STOCKS');
@@ -28,8 +28,8 @@ const actions = {
 };
 
 const getters = {
-    stocks: state => {
-        return state.stocks;
+    weapons: state => {
+        return state.weapons;
     }
 };
 

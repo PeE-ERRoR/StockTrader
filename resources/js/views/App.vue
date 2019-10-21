@@ -3,7 +3,11 @@
         <app-header></app-header>
         <v-container>
             <transition name="slide" mode="out-in">
-                <router-view></router-view>
+                <router-view>
+                    <template v-slot:header>
+                <h1>Here might be a page title</h1>
+            </template>
+                </router-view>
             </transition>
          </v-container>
     </v-app>
@@ -17,6 +21,7 @@
         },
         created() {
             this.$store.dispatch('initStocks');
+            this.$store.dispatch('tryAutoLogin');
         }
     }
 </script>

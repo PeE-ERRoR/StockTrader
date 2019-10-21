@@ -18,7 +18,7 @@ class AuthController extends Controller
                     'name' => 'required',
                     'email' => 'required|email',
                     'password' => 'required',  
-                    'c_password' => 'required|same:password', 
+                    'confirm_password' => 'required|same:password', 
                     ]);   
         if ($validator->fails()) {          
             return response()->json(['error'=>$validator->errors()], 401);
@@ -39,9 +39,21 @@ class AuthController extends Controller
         return response()->json(['error'=>'Unauthorised'], 401); 
         } 
     }
+
+    public function logout(Request $request)
+    {
+        $request->user()->token()->revoke();
+        // Auth::logout();
+        return response()->json(['success' => true]);
+    }
     
-    public function getUser() {
+    public function getProfile() {
         $user = Auth::user();
+        return response()->json($user, $this->successStatus); 
+    }
+
+    public function getUser() {
+        $user = User::get();
         return response()->json(['success' => $user], $this->successStatus); 
     }
 }

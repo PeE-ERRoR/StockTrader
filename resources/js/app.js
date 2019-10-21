@@ -1,23 +1,19 @@
-import Vue from 'vue';
-import VueRouter from 'vue-router';
-import VueResource from 'vue-resource';
-import App from './views/App.vue';
+import Vue from 'vue'
+import VueResource from 'vue-resource'
+import App from './views/App.vue'
+import axios from 'axios'
+import router from './routers'
+import vuetify  from './plugins/vuetify'
+import store from './store/store'
 
-import {routes} from './routers';
-import vuetify  from './plugins/vuetify';
-import store from './store/store';
+axios.defaults.baseURL = 'api'
+// axios.defaults.headers.common['Authorization'] = ''
 
-Vue.use(VueRouter);
 Vue.use(VueResource)
-Vue.http.options.root = 'https://vuejs-sotck-trader.firebaseio.com/';
+Vue.http.options.root = 'https://vuejs-sotck-trader.firebaseio.com/'
 
 Vue.filter('currency', (value) => {
-    return '$' + value.toLocaleString();
-});
-
-const router = new VueRouter({
-    // mode: 'history',
-    routes
+    return '$' + value.toLocaleString()
 });
 
 const app = new Vue({

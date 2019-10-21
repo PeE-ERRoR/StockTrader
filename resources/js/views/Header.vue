@@ -10,11 +10,12 @@
         <div class="flex-grow-1"></div>
 
         <v-toolbar-items>
-            <v-btn text to="/">Stock Trader</v-btn>
-            <v-btn text to="/portfolio">Portfolio</v-btn>
-            <v-btn text to="/stocks">Stocks</v-btn>
+            <v-btn v-if="auth" text to="/dashbord">Stock Trader</v-btn>
+            <v-btn v-if="auth" text to="/portfolio">Portfolio</v-btn>
+            <v-btn text to="/">Stocks</v-btn>
             <v-btn @click="endDay">End Day</v-btn>
             <v-menu
+                v-if="auth"
                 bottom
                 origin="center center"
                 transition="scale-transition">
@@ -43,17 +44,18 @@
                     </v-list-item>
                 </v-list> -->
             </v-menu>
-
-            <app-login></app-login>
-            <app-register></app-register>
+            <app-login v-if="!auth"></app-login>
+            <app-register v-if="!auth"></app-register>
         </v-toolbar-items>
 
-        <template v-if="$vuetify.breakpoint.smAndUp">
+        <template v-if="auth">
             <v-btn icon>
                 <v-icon>mdi-plus-circle</v-icon>
             </v-btn>
             <span>{{ funds | currency }}</span>
-            <v-btn icon>
+            <v-btn
+              icon
+              @click="logout">
                 <v-icon>mdi-export-variant</v-icon>
             </v-btn>
         </template>
@@ -63,7 +65,7 @@
 
 <script>
   import {mapActions} from 'vuex'
-  import Login from '../components/auth/login'
+  import Login from '../components/auth/Login'
   import Register from '../components/auth/Register'
 
   export default {
@@ -75,27 +77,34 @@
     }),
     computed: {
       funds() {
-        return this.$store.getters.funds;
+        return this.$store.getters.funds
+      },
+      auth() {
+        return this.$store.getters.isAuthenticated
       }
     },
     methods: {
       ...mapActions({
         randomizeStocks: 'randomizeStocks',
-        fetchData: 'loadData'
+        fetchData: 'loadData',
+        userLogout: 'logout'
       }),
       endDay() {
-        this.randomizeStocks();
+        this.randomizeStocks()
       },
       saveData() {
         const data = {
           funds: this.$store.getters.funds,
           stockPortfolio: this.$store.getters.stockPortfolio,
           stocks: this.$store.getters.stocks
-        };
-        this.$http.put('data.json', data);
+        }
+        this.$http.put('data.json', data)
       },
       loadData() {
-        this.fetchData();
+        this.fetchData()
+      },
+      logout() {
+        this.userLogout()
       }
     },
     components: {

@@ -8,6 +8,9 @@
         <hr>
         <v-text-field v-model="myStyle.backgroundColor"></v-text-field>
         <div :style="myStyle"></div>
+        <slot name="header"></slot>
+        <p>{{ email }}</p>
+
     </div>
 </template>
 
@@ -25,6 +28,9 @@ export default {
     computed: {
         funds() {
             return this.$store.getters.funds;
+        },
+        email() {
+            return !this.$store.getters.user ? false : this.$store.getters.user.email
         }
     }
 }
